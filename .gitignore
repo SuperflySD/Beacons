@@ -27,3 +27,4 @@ app/build/
 /build/
 /gradle
 
+/.idea/vcs.xml
