@@ -1,0 +1,65 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '26'
+
+    defaultConfig {
+        group 'javalab'
+        applicationId "epam.lab.ibeacondetector"
+        version '1.0-SNAPSHOT'
+        minSdkVersion 18
+        targetSdkVersion 23
+
+//        jackOptions {
+//            enabled true
+//        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            applicationVariants.all { variant ->
+                renameAPK(variant, defaultConfig, 'R')
+            }
+        }
+//            debug {
+//                minifyEnabled false
+//                applicationVariants.all { variant ->
+//                    renameAPK(variant, defaultConfig, 'D')
+//                }
+//        }
+    }
+}
+def renameAPK(variant, defaultConfig, buildType) {
+    variant.outputs.each { output ->
+        def formattedDate = new Date().format('ddMMyy')
+
+        def file = output.packageApplication.outputFile
+        def fileName = "EpamLabBeacon_" + formattedDate + "_" + buildType + ".apk"
+        output.packageApplication.outputFile = new File(file.parent, fileName)
+    }
+}
+
+dependencies {
+    compile files('libs/commons-io-2.4.jar')
+    testCompile 'junit:junit:4.12'
+
+}
+
+
