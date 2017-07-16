@@ -1,24 +1,15 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-}
-
 apply plugin: 'com.android.application'
 
-
-
 android {
-    compileSdkVersion 24
+    compileSdkVersion 21
     buildToolsVersion '26'
 
     defaultConfig {
         group 'javalab'
-        applicationId "epam.lab.ibeacondetector"
+        applicationId "epam.lab.beacons"
         version '1.0-SNAPSHOT'
-        minSdkVersion 23
-        targetSdkVersion 24
+        minSdkVersion 21
+        targetSdkVersion 21
 
         jackOptions {
             enabled true

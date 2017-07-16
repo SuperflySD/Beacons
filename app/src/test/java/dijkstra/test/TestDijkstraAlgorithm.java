@@ -43,17 +43,24 @@ public class TestDijkstraAlgorithm {
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
         dijkstra.execute(0);
         List<Vertex> path = dijkstra.getPath(10);
-
+        String str = "";
         int total = 0;
         for (int i = 0; i < path.size(); i++) {
-            Edge cur = graph.getEdgeByParams(path.get(i).getId(), i + 1 != path.size() ? path.get(i + 1).getId() : Integer.MAX_VALUE);
+            Edge cur = graph.getEdge(path.get(i).getId(), i + 1 != path.size() ? path.get(i + 1).getId() : Integer.MAX_VALUE);
             if (cur != null)
                 total += cur.getWeight();
+            str = str + "vertex " + path.get(i) + "|  chosen edge: " + cur + " -> \n";
             System.out.println("vertex " + path.get(i) + "|  chosen edge: " + cur + " -> ");
-            graph.getEdgesListBySource(path.get(i).getId()).forEach(edge -> System.out.println("     " + edge));
+
+            for (Edge e : graph.getEdgesListBySource(path.get(i).getId())) {
+                str += "       " + e.toString() + "\n";
+                System.out.println("     " + e);
+            }
             System.out.println("------------------------");
         }
         System.out.println("Total weight comprises " + total);
+        str += "\n------------------------\nTotal weight comprises " + total;
+        System.out.println(str);
 
 
     }

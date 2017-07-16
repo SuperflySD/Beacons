@@ -1,11 +1,8 @@
 package epam.lab.dijkstra.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Graph {
     private List<Vertex> vertexesList = new ArrayList<>();
@@ -40,10 +37,18 @@ public class Graph {
         return this.vertexesList.get(vertexesList.indexOf(new Vertex(vertexId)));
     }
 
+    public boolean containsVertex(int vertexId) {
+        return vertexesList.contains(new Vertex(vertexId));
+    }
+
+    private boolean containsTwoVertexes(int sourceVertexId, int destinationVertexId) {
+        return vertexesList.contains(new Vertex(sourceVertexId)) && vertexesList.contains(new Vertex(sourceVertexId));
+    }
+
     public Graph addEdge(Edge edge) {
-        if (!(vertexesList.stream().anyMatch(vertex -> vertex.getId() == edge.getSource().getId()) &&
-                vertexesList.stream().anyMatch(vertex -> vertex.getId() == edge.getDestination().getId())))
+        if (!containsTwoVertexes(edge.getSource().getId(), edge.getDestination().getId()))
             throw new RuntimeException("There is no such couple of source-destination for this edge");
+
         if (edgesList.contains(edge))
             throw new RuntimeException("Edge with such source-destination couple is already in existence");
         this.edgesList.add(edge);
@@ -52,8 +57,7 @@ public class Graph {
 
     public Graph addEdge(Vertex source, Vertex destination, int weight) {
         Edge temp = new Edge(source, destination, weight);
-        if (!(vertexesList.stream().anyMatch(vertex -> vertex.getId() == temp.getSource().getId()) &&
-                vertexesList.stream().anyMatch(vertex -> vertex.getId() == temp.getDestination().getId())))
+        if (!containsTwoVertexes(source.getId(), destination.getId()))
             throw new RuntimeException("There is no such couple of source-destination for this edge");
         if (edgesList.contains(temp))
             throw new RuntimeException("Edge with such source-destination couple is already in existence");
@@ -62,10 +66,9 @@ public class Graph {
         return this;
     }
 
-    public Graph addEdge(int sourceId, int destinationId, int weight) {
-        Edge temp = new Edge(new Vertex(sourceId), new Vertex(destinationId), weight);
-        if (!(vertexesList.stream().anyMatch(vertex -> vertex.getId() == temp.getSource().getId()) &&
-                vertexesList.stream().anyMatch(vertex -> vertex.getId() == temp.getDestination().getId())))
+    public Graph addEdge(int sourceVertexId, int destinationVertexId, int weight) {
+        Edge temp = new Edge(new Vertex(sourceVertexId), new Vertex(destinationVertexId), weight);
+        if (!containsTwoVertexes(sourceVertexId, destinationVertexId))
             throw new RuntimeException("There is no such couple of source-destination for this edge");
         if (edgesList.contains(temp))
             throw new RuntimeException("Edge with such source-destination couple is already in existence");
@@ -84,10 +87,11 @@ public class Graph {
         return this;
     }
 
-    public Edge getEdgeByParams(int sourceVertexId, int destinationVertexId) {
-        return this.edgesList.stream().
-                filter(edge -> edge.getSource().getId() == sourceVertexId && edge.getDestination().getId() == destinationVertexId).
-                findFirst().orElse(null);
+    public Edge getEdge(int sourceVertexId, int destinationVertexId) {
+        for (Edge e : edgesList)
+            if (e.getSource().getId() == sourceVertexId && e.getDestination().getId() == destinationVertexId)
+                return e;
+        return null;
     }
 
     public List<Vertex> getVertexesList() {
@@ -95,27 +99,39 @@ public class Graph {
     }
 
     public List<Integer> getIdVertexesList() {
-        return vertexesList.stream().map(Vertex::getId).collect(Collectors.toList());
+        List<Integer> list = new ArrayList<>();
+        for (Vertex v : vertexesList)
+            list.add(v.getId());
+        return list;
     }
 
     public List<Edge> getEdgesListBySource() {
-        return edgesList.stream().sorted(Comparator.comparingInt(e -> e.getSource().getId())).collect(Collectors.toList());
+        Collections.sort(edgesList, (Edge e1, Edge e2) -> Integer.compare(e1.getSource().getId(), e2.getSource().getId()));
+        return edgesList;
     }
 
     public List<Edge> getEdgesListBySource(Integer... sources) {
-        return edgesList.stream().filter(edge -> Arrays.asList(sources).contains(edge.getSource().getId())).
-                sorted(Comparator.comparingInt(e -> e.getSource().getId())).collect(Collectors.toList());
+        List<Edge> list = new ArrayList<>();
+        for (Edge e : edgesList)
+            for (int i = 0; i < sources.length; i++)
+                if (e.getSource().getId() == sources[i])
+                    list.add(e);
+        Collections.sort(list, (Edge e1, Edge e2) -> Integer.compare(e1.getSource().getId(), e2.getSource().getId()));
+        return list;
     }
 
     public List<Edge> getEdgesListByDestination() {
-        ArrayList<Edge> temp = new ArrayList<>(edgesList);
-        temp.sort(Comparator.comparingInt(e -> e.getDestination().getId()));
-        return temp;
+        Collections.sort(edgesList, (Edge e1, Edge e2) -> Integer.compare(e1.getDestination().getId(), e2.getDestination().getId()));
+        return edgesList;
     }
 
     public List<Edge> getEdgesListByDestination(Integer... destinations) {
-        return edgesList.stream().filter(edge -> Arrays.asList(destinations).contains(edge.getDestination().getId())).
-                sorted(Comparator.comparingInt(e -> e.getDestination().getId())).collect(Collectors.toList());
+        List<Edge> list = new ArrayList<>();
+        for (Edge e : edgesList)
+            for (int i = 0; i < destinations.length; i++)
+                if (e.getSource().getId() == destinations[i])
+                    list.add(e);
+        Collections.sort(list, (Edge e1, Edge e2) -> Integer.compare(e1.getDestination().getId(), e2.getDestination().getId()));
+        return list;
     }
-
 }

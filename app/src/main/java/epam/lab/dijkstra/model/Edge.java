@@ -10,6 +10,11 @@ public class Edge {
         this.destination = destination;
         this.weight = weight;
     }
+    public Edge(int source, int destination, int weight) {
+        this.source = new Vertex(source);
+        this.destination = new Vertex(destination);
+        this.weight = weight;
+    }
 
     public Vertex getDestination() {
         return destination;
