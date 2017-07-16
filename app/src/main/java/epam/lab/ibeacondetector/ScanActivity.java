@@ -2,12 +2,18 @@
 package epam.lab.ibeacondetector;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import epam.lab.util.BleUtil;
 import epam.lab.util.ScannedDevice;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +25,7 @@ public class ScanActivity extends Activity implements BluetoothAdapter.LeScanCal
     private BluetoothAdapter mBTAdapter;
     private DeviceAdapter mDeviceAdapter;
     private boolean mIsScanning;
+    private BluetoothLeScanner bluetoothLeScanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +103,7 @@ public class ScanActivity extends Activity implements BluetoothAdapter.LeScanCal
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-               mDeviceAdapter.update(newDeivce, newRssi, newScanRecord);
+                mDeviceAdapter.update(newDeivce, newRssi, newScanRecord);
 
             }
         });
@@ -117,7 +124,7 @@ public class ScanActivity extends Activity implements BluetoothAdapter.LeScanCal
             finish();
             return;
         }
-
+        bluetoothLeScanner = mBTAdapter.getBluetoothLeScanner();
         ListView deviceListView = (ListView) findViewById(R.id.list);
         mDeviceAdapter = new DeviceAdapter(this, R.layout.listitem_device, new ArrayList<ScannedDevice>());
         deviceListView.setAdapter(mDeviceAdapter);
@@ -126,7 +133,14 @@ public class ScanActivity extends Activity implements BluetoothAdapter.LeScanCal
 
     private void startScan() {
         if ((mBTAdapter != null) && (!mIsScanning)) {
-            mBTAdapter.startLeScan(this);
+            // mBTAdapter.startLeScan(this);
+            bluetoothLeScanner.startScan(new ScanCallback() {
+                @Override
+                public void onScanResult(int callbackType, ScanResult result) {
+                    mDeviceAdapter.update(result.getDevice(), result.getRssi(), result.getScanRecord().getBytes());
+                }
+            });
+
             mIsScanning = true;
             setProgressBarIndeterminateVisibility(true);
             invalidateOptionsMenu();
@@ -135,7 +149,9 @@ public class ScanActivity extends Activity implements BluetoothAdapter.LeScanCal
 
     private void stopScan() {
         if (mBTAdapter != null) {
-            mBTAdapter.stopLeScan(this);
+            bluetoothLeScanner.stopScan(new ScanCallback() {
+            });
+            // mBTAdapter.stopLeScan(this);
         }
         mIsScanning = false;
         setProgressBarIndeterminateVisibility(false);

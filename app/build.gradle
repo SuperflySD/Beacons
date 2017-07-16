@@ -2,13 +2,11 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
-    }
+
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+
 
 
 android {
@@ -19,12 +17,12 @@ android {
         group 'javalab'
         applicationId "epam.lab.ibeacondetector"
         version '1.0-SNAPSHOT'
-        minSdkVersion 18
-        targetSdkVersion 23
+        minSdkVersion 23
+        targetSdkVersion 24
 
-//        jackOptions {
-//            enabled true
-//        }
+        jackOptions {
+            enabled true
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
