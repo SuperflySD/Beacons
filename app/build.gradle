@@ -20,7 +20,7 @@ android {
         applicationId "epam.lab.ibeacondetector"
         version '1.0-SNAPSHOT'
         minSdkVersion 18
-        targetSdkVersion 23
+        targetSdkVersion 24
 
 //        jackOptions {
 //            enabled true
