@@ -25,5 +25,5 @@ local.properties
 .gradle
 app/build/
 /build/
-/gradle/
+/gradle
 
