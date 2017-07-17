@@ -16,6 +16,7 @@ import epam.lab.dijkstra.model.Vertex;
 
 public class DijkstraAlgorithm {
 
+    private Graph graph;
     private final List<Vertex> nodes;
     private final List<Edge> edges;
     private Set<Vertex> settledNodes;
@@ -27,10 +28,11 @@ public class DijkstraAlgorithm {
         // create a copy of the array so that we can operate on this array
         this.nodes =graph.getVertexesList();
         this.edges = graph.getEdgesListBySource();
+        this.graph =graph;
     }
 
     public void execute(int sourceId) {
-        Vertex source = new Vertex(sourceId);
+        Vertex source = graph.getVertexById(sourceId);
         settledNodes = new HashSet<>();
         unSettledNodes = new HashSet<>();
         distance = new HashMap<>();
@@ -70,7 +72,7 @@ public class DijkstraAlgorithm {
     }
 
     private List<Vertex> getNeighbors(Vertex node) {
-        List<Vertex> neighbors = new ArrayList<Vertex>();
+        List<Vertex> neighbors = new ArrayList<>();
         for (Edge edge : edges) {
             if (edge.getSource().equals(node)
                     && !isSettled(edge.getDestination())) {
@@ -108,9 +110,9 @@ public class DijkstraAlgorithm {
     }
 
 
-    public LinkedList<Vertex> getPath(int targetVertexId) {
-        Vertex target = new Vertex(targetVertexId);
-        LinkedList<Vertex> path = new LinkedList<Vertex>();
+    public List<Vertex> getPath(int targetVertexId) {
+        Vertex target = graph.getVertexById(targetVertexId);
+        List<Vertex> path = new ArrayList<>();
         Vertex step = target;
         // check if a path exists
         if (ancestors.get(step) == null) {

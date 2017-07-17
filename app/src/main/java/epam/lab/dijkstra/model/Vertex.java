@@ -3,14 +3,20 @@ package epam.lab.dijkstra.model;
 public class Vertex {
     private int id;
     private String name;
+    private double longt;
 
+    public Vertex(int id,  double longt) {
+        this.id = id;
+        this.longt = longt;
+    }
     public Vertex(int id) {
         this.id = id;
     }
 
-    public Vertex(int id, String name) {
+    public Vertex(int id, String name, double longt) {
         this.id = id;
         this.name = name;
+        this.longt = longt;
     }
 
     public int getId() {

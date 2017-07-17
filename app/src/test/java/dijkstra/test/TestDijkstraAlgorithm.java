@@ -19,7 +19,7 @@ public class TestDijkstraAlgorithm {
     public void create() {
         this.graph = new Graph();
         for (int i = 0; i < 11; i++)
-            graph.addVertex(i);
+            graph.addVertex(new Vertex(i, (double)(i+100)));
 
         graph.addEdge(0, 1, 85).
                 addEdge(0, 2, 217).
@@ -34,7 +34,7 @@ public class TestDijkstraAlgorithm {
                 addEdge(9, 10, 40).
                 addEdge(1, 10, 600);
 
-        graph.addEdge(2, 10, 30);
+       // graph.addEdge(2, 10, 30);
 
     }
 
