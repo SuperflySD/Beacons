@@ -147,7 +147,7 @@ public class IBeacon {
      * @param rssi The measured signal strength of the packet
      * @return An instance of an <code>IBeacon</code>
      */
-    public static IBeacon fromScanData(byte[] scanData, int rssi) {
+    public static IBeacon  fromScanData(byte[] scanData, int rssi) {
         int startByte = 0;
         boolean patternFound = false;
         while (startByte <= 5) {

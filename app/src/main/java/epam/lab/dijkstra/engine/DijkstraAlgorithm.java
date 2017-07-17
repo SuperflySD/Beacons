@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import epam.lab.dijkstra.model.Edge;
-import epam.lab.dijkstra.model.Graph;
+import epam.lab.dijkstra.manager.Graph;
 import epam.lab.dijkstra.model.Vertex;
 
 

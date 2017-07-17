@@ -1,8 +1,11 @@
-package epam.lab.dijkstra.model;
+package epam.lab.dijkstra.manager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import epam.lab.dijkstra.model.Edge;
+import epam.lab.dijkstra.model.Vertex;
 
 public class Graph {
     private List<Vertex> vertexesList = new ArrayList<>();
@@ -107,7 +110,7 @@ public class Graph {
 
     public List<Edge> getEdgesListBySource() {
         Collections.sort(edgesList, (Edge e1, Edge e2) -> Integer.compare(e1.getSource().getId(), e2.getSource().getId()));
-        return edgesList;
+        return Collections.unmodifiableList(edgesList);
     }
 
     public List<Edge> getEdgesListBySource(Integer... sources) {
@@ -122,7 +125,7 @@ public class Graph {
 
     public List<Edge> getEdgesListByDestination() {
         Collections.sort(edgesList, (Edge e1, Edge e2) -> Integer.compare(e1.getDestination().getId(), e2.getDestination().getId()));
-        return edgesList;
+        return Collections.unmodifiableList(edgesList);
     }
 
     public List<Edge> getEdgesListByDestination(Integer... destinations) {

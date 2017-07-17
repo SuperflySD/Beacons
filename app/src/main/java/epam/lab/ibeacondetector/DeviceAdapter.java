@@ -6,7 +6,7 @@ import java.util.List;
 
 import epam.lab.dijkstra.engine.DijkstraAlgorithm;
 import epam.lab.dijkstra.model.Edge;
-import epam.lab.dijkstra.model.Graph;
+import epam.lab.dijkstra.manager.Graph;
 import epam.lab.dijkstra.model.Vertex;
 import epam.lab.util.DateUtil;
 import epam.lab.util.ScannedDevice;
